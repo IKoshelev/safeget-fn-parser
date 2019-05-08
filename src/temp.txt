@@ -1,0 +1,17 @@
+    const chain = chainText
+                    .split(/\.|\[|]/g)
+                    .map(x => x.trim())
+                    .filter(x => x.length > 0)
+                    .map(x => {
+                        if(x.startsWith('"') 
+                            || x.startsWith("'")) {
+                                return x.slice(1,x.length - 1);
+                        } else {
+                            const badSymbolsMatch = x.search(/return|;|\\|`|{/g);
+                            if (badSymbolsMatch > -1) {
+                                throw Error(`Found bad symbol ${x.slice(badSymbolsMatch, badSymbolsMatch + 3)} in string ${fnText}. Complex scenarios are not handled.`);
+                            }
+
+                            return x;
+                        }
+                    });
