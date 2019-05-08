@@ -1,6 +1,7 @@
 # safeget-fn-parser
 
 Access long property chains like (x) => x.a.b.c.d; safely with null/undefined coalescing.
+Works by parsing function text, can handle both classical JS functions and fat-arrow functions.
 
 Available via NPM:
 
