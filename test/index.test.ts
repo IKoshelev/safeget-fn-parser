@@ -16,6 +16,53 @@ describe('safeGet', () => {
         }
     }
 
+    it('speedtest', function() {
+
+        let test2: typeof test = {
+            a:{
+                b:<typeof test.a.b>{
+
+                }
+            }
+        }
+
+        function safeGetClassical <TEnd>(get: () => TEnd): TEnd | undefined {
+            try {
+                return get();
+            } catch (ex) {
+                return undefined;
+            }
+        }
+
+        this.timeout(5 * 60 * 1000);
+
+        console.time("classical throw");
+        for(let count = 1000 * 1000; count > 0; count--){
+            safeGetClassical(() => test2.a.b.c.d.e);
+        }
+        console.timeEnd('classical throw');
+
+        console.time("classical happy");
+        for(let count = 1000 * 1000; count > 0; count--){
+            safeGetClassical(() => test.a.b.c.d.e);
+        }
+        console.timeEnd('classical happy');
+
+        console.time("parser throw");
+        for(let count = 1000 * 1000; count > 0; count--){
+            safeGet(test2, (x) => x.a.b.c.d.e);
+        }
+        console.timeEnd('parser throw');
+
+        console.time("parser happy");
+        for(let count = 1000 * 1000; count > 0; count--){
+            safeGet(test, (x) => x.a.b.c.d.e);
+        }
+        console.timeEnd('parser happy');
+
+
+    });
+
     it('can get deep inside', () => {
 
         const val = safeGet(test, (x) => x.a.b.c.d.e);
