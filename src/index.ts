@@ -38,24 +38,25 @@ export function parseAccessChain(fnText: string): string[] {
     }
 
     chainText = chainText.trim();
-    if(chainText.startsWith("return ")){
+    if (chainText.startsWith("return ")) {
         chainText = chainText.slice(7);
     }
 
-    if(chainText.endsWith(";")){
+    if (chainText.endsWith(";")) {
         chainText = chainText.slice(0, chainText.length - 1);
     }
     chainText = chainText.trim();
 
-    const badSymbolsMatch = chainText.search(/\[|"|'|`|{|,|;|\\|\//g);
+    const badSymbolsMatch = chainText.search(/\[|"|'|`|{|,|;|\\|\(|\)|\//g);
     if (badSymbolsMatch > -1) {
         throw Error(`Found bad symbol ${chainText.slice(badSymbolsMatch, badSymbolsMatch + 3)} in string ${fnText}. Only x => x.a.b.c.d; supported.`);
     }
 
     const chain = chainText
-                    .split('.')
-                    .map(x => x.trim())
-                    .filter(x => x.length > 0);
+        .split('.')
+        .map(x => x.trim())
+        .filter(x => x.length > 0);
 
     return chain;
 }
+
